@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Customise | Sakina Art Blog</title>
+<meta name="description" content="Design your own custom portrait, painted t-shirt, resin jewellery, resin décor or gifting piece.">
+<link rel="icon" href="assets/icons/paint.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/cart.css">
+<link rel="stylesheet" href="css/customise.css">
+</head>
+<body data-page="customise">
+<div id="site-header"></div>
+<main class="cz">
+<div class="page-head">
+  <div class="flora corner tl float" data-flora="tube"></div><div class="flora corner tr float s3" data-flora="palette"></div>
+  <div class="wrap"><span class="eyebrow">Made to order</span><h1 data-paint>Customise</h1><p>Flip through the sketchbook, pick what you'd love painted, and tell me the details.</p></div>
+</div>
+
+<section class="cz-body">
+  <div class="wrap">
+
+    <ol class="progress" aria-label="Progress">
+      <li class="pstep on" data-p="1"><button type="button"><span class="dot"></span><b>Step 1</b><em>Choose your item</em></button></li>
+      <li class="pline" aria-hidden="true"><svg viewBox="0 0 100 10" preserveAspectRatio="none"><path class="base" d="M0 5 Q15 1 30 5 T60 5 T100 5" pathLength="1"/><path class="fillp" d="M0 5 Q15 1 30 5 T60 5 T100 5" pathLength="1"/></svg></li>
+      <li class="pstep" data-p="2"><button type="button"><span class="dot"></span><b>Step 2</b><em>Personalise it</em></button></li>
+      <li class="pline" aria-hidden="true"><svg viewBox="0 0 100 10" preserveAspectRatio="none"><path class="base" d="M0 5 Q15 9 30 5 T60 5 T100 5" pathLength="1"/><path class="fillp" d="M0 5 Q15 9 30 5 T60 5 T100 5" pathLength="1"/></svg></li>
+      <li class="pstep" data-p="3"><button type="button"><span class="dot"></span><b>Step 3</b><em>Send your request</em></button></li>
+    </ol>
+
+    <div class="steps-wrap" id="steps">
+      <!-- STEP 1 -->
+      <div class="panel on" id="panel1" data-step="1">
+        <div class="section-head"><h2>What shall I paint for you?</h2><p>Pick one – you can always start again.</p></div>
+        <div class="cat-grid" id="cat-grid" role="radiogroup" aria-label="Choose your item"></div>
+        <div class="nav-row"><span class="hint" id="hint1">Choose an item to continue</span><button type="button" class="btn solid" id="next1" disabled>Continue</button></div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="panel" id="panel2" data-step="2">
+        <div class="section-head"><span class="eyebrow" id="chosen-tag"></span><h2>Make it yours</h2><p>The more you tell me, the closer it gets to what you imagine.</p></div>
+        <form class="cz-form" id="fields" novalidate></form>
+        <div class="nav-row"><button type="button" class="btn ghost" id="back2">Back</button><button type="button" class="btn solid" id="next2">Continue</button></div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="panel" id="panel3" data-step="3">
+        <div class="section-head"><h2>Almost there</h2><p>Check your summary and tell me how to reach you.</p></div>
+        <div class="send-grid">
+          <form class="cz-form" id="contact" novalidate>
+            <div class="f" data-f="name"><label for="c-name">Your name *</label><input id="c-name" name="name" autocomplete="name"><small class="msg"></small></div>
+            <div class="f" data-f="email"><label for="c-email">Email *</label><input id="c-email" name="email" type="email" autocomplete="email"><small class="msg"></small></div>
+            <div class="f" data-f="phone"><label for="c-phone">Phone / WhatsApp (optional)</label><input id="c-phone" name="phone" type="tel" autocomplete="tel"></div>
+            <div class="f" data-f="timeline"><label for="c-time">Preferred timeline</label>
+              <select id="c-time" name="timeline"><option>No rush</option><option>Within 2 weeks</option><option>Within a month</option><option>I have a date in mind</option></select></div>
+            <div class="f" data-f="date" id="date-wrap" hidden><label for="c-date">Needed by</label><input id="c-date" name="date" type="date"></div>
+          </form>
+          <aside class="receipt" id="receipt" aria-label="Order summary"></aside>
+        </div>
+        <p class="form-error" id="form-error" role="alert" hidden></p>
+        <div class="nav-row"><button type="button" class="btn ghost" id="back3">Back</button>
+          <button type="button" class="btn solid submit" id="submit"><span class="lbl">Send my request</span><svg class="brushload" viewBox="0 0 120 20" preserveAspectRatio="none" aria-hidden="true"><path d="M4 12 C24 2 44 18 64 9 S104 6 116 11" pathLength="1"/></svg></button></div>
+      </div>
+
+      <div class="wipe" id="wipe" aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- success splash -->
+<div class="splash" id="splash" role="dialog" aria-modal="true" aria-labelledby="splash-title" hidden>
+  <i class="sp s1"></i><i class="sp s2"></i><i class="sp s3"></i><i class="sp s4"></i>
+  <div class="splash-in">
+    <div class="flora sf" data-flora="palette"></div>
+    <h2 id="splash-title"></h2>
+    <p id="splash-msg"></p>
+    <div class="actions" id="splash-actions"></div>
+  </div>
+</div>
+
+<div id="site-footer"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/main.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/customise.js"></script>
+</body>
+</html>

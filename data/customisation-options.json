@@ -1,0 +1,15 @@
+{
+  "_note": "Fields shown on the customisation request form. Edit to match what you actually offer.",
+  "types": ["Portrait", "Custom painting", "Handmade craft", "Gift / personalised item", "Other"],
+  "sizes": ["Small", "Medium", "Large", "Custom size"],
+  "fields": [
+    { "name": "name", "label": "Your name", "type": "text", "required": true },
+    { "name": "email", "label": "Email", "type": "email", "required": true },
+    { "name": "phone", "label": "Phone / WhatsApp", "type": "tel", "required": false },
+    { "name": "type", "label": "What do you want made?", "type": "select", "required": true },
+    { "name": "size", "label": "Size", "type": "select", "required": false },
+    { "name": "details", "label": "Describe your idea", "type": "textarea", "required": true },
+    { "name": "reference", "label": "Reference images", "type": "file", "required": false },
+    { "name": "deadline", "label": "Needed by", "type": "date", "required": false }
+  ]
+}
