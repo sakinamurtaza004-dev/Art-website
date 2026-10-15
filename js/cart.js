@@ -30,7 +30,7 @@
   function badge(pop) {
     const b = $('cart-count'), n = count();
     b.textContent = n; b.hidden = n === 0;
-    if (pop && window.gsap && !RM && n) gsap.fromTo(b, { scale: 1.8 }, { scale: 1, duration: .6, ease: 'elastic.out(1,.5)' });
+    if (pop && window.gsap && !RM && n) gsap.fromTo(b, { scale: 1.8 }, { scale: 1, duration: .75, ease: 'elastic.out(1,.5)' });
   }
 
   function orderText() {

@@ -34,7 +34,7 @@
       const cards = $$('.pcard');
       gsap.set(cards, { opacity: 0, y: 70 });
       triggers = ScrollTrigger.batch(cards, { start: 'top 94%', once: true,
-        onEnter: els => gsap.to(els, { opacity: 1, y: 0, duration: 1.1, ease: 'power3.out', stagger: .12, clearProps: 'transform,opacity' }) });
+        onEnter: els => gsap.to(els, { opacity: 1, y: 0, duration: 1.38, ease: 'power3.out', stagger: .15, clearProps: 'transform,opacity' }) });
     }
   }
   const paintFilters = () => bar.innerHTML = FILTERS.map(([id, name]) =>
@@ -49,11 +49,11 @@
     if (!HAS_GSAP || RM || !cards.length) { draw(); return; }
     busy = true;
     gsap.to(cards, { x: () => rnd(-170, 170), y: () => rnd(-130, 130), rotate: () => rnd(-24, 24), opacity: 0, scale: .7,
-      duration: .45, ease: 'power2.in', stagger: { amount: .2 },
+      duration: .56, ease: 'power2.in', stagger: { amount: .25 },
       onComplete() {
         draw();
         gsap.fromTo($$('.pcard'), { x: () => rnd(-220, 220), y: () => rnd(-170, 170), rotate: () => rnd(-24, 24), opacity: 0, scale: .7 },
-          { x: 0, y: 0, rotate: 0, opacity: 1, scale: 1, duration: .95, ease: 'back.out(1.3)', stagger: { amount: .5 }, clearProps: 'transform,opacity',
+          { x: 0, y: 0, rotate: 0, opacity: 1, scale: 1, duration: 1.19, ease: 'back.out(1.3)', stagger: { amount: .62 }, clearProps: 'transform,opacity',
             onComplete: () => { busy = false; if (window.ScrollTrigger) ScrollTrigger.refresh(); } });
       } });
   }
@@ -72,7 +72,7 @@
   /* ---------- product modal ---------- */
   const pm = $('#pm'), panel = $('#pm-panel'), body = $('#pm-body'), pwash = $('#pm-wash');
   let lastFocus = null, swapping = false;
-  const stripes = ['#F4A261', '#C9184A', '#F5C518', '#E8651A', '#F4A261', '#F5C518', '#C9184A'];
+  const stripes = ['#F2C4A0', '#E8C4D4', '#F5DFA0', '#E8957A', '#F2C4A0', '#F5DFA0', '#E8C4D4'];
   pwash.innerHTML = `<svg viewBox="0 0 1000 900" preserveAspectRatio="none"><g filter="url(#wc)" fill="none" stroke-linecap="round">${stripes.map((c, i) =>
     `<path d="M30 ${70 + i * 125} C260 ${40 + i * 125} 540 ${110 + i * 125} 975 ${75 + i * 125}" stroke="${c}" stroke-width="190" stroke-opacity=".96"/>`).join('')}</g></svg>`;
 
@@ -107,8 +107,8 @@
       const swap = () => { body.innerHTML = modalHTML(p); fill(body); body.scrollTop = 0; };
       if (!HAS_GSAP || RM) { swap(); swapping = false; return; }
       gsap.set(pwash, { xPercent: 112, autoAlpha: 1 });
-      gsap.to(pwash, { xPercent: 0, duration: .5, ease: 'power2.in', onComplete() {
-        swap(); gsap.to(pwash, { xPercent: -115, duration: .85, ease: 'power2.out', onComplete: () => { gsap.set(pwash, { autoAlpha: 0 }); swapping = false; } });
+      gsap.to(pwash, { xPercent: 0, duration: .62, ease: 'power2.in', onComplete() {
+        swap(); gsap.to(pwash, { xPercent: -115, duration: 1.06, ease: 'power2.out', onComplete: () => { gsap.set(pwash, { autoAlpha: 0 }); swapping = false; } });
       } });
       return;
     }
@@ -116,10 +116,10 @@
     body.innerHTML = modalHTML(p); fill(body); body.scrollTop = 0;
     pm.hidden = false; document.body.style.overflow = 'hidden';
     if (HAS_GSAP && !RM) {
-      gsap.fromTo('.pm-back', { opacity: 0 }, { opacity: 1, duration: .5 });
-      gsap.fromTo(panel, { xPercent: 100, rotateY: -28 }, { xPercent: 0, rotateY: 0, duration: .95, ease: 'power3.out' });
+      gsap.fromTo('.pm-back', { opacity: 0 }, { opacity: 1, duration: .62 });
+      gsap.fromTo(panel, { xPercent: 100, rotateY: -28 }, { xPercent: 0, rotateY: 0, duration: 1.19, ease: 'power3.out' });
       gsap.set(pwash, { xPercent: 0, autoAlpha: 1 });
-      gsap.to(pwash, { xPercent: -115, duration: 1.25, ease: 'power2.inOut', delay: .35, onComplete: () => gsap.set(pwash, { autoAlpha: 0 }) });
+      gsap.to(pwash, { xPercent: -115, duration: 1.56, ease: 'power2.inOut', delay: .44, onComplete: () => gsap.set(pwash, { autoAlpha: 0 }) });
     }
     $('.pm-x').focus();
   }
@@ -128,8 +128,8 @@
     history.replaceState(null, '', location.pathname);
     const done = () => { pm.hidden = true; document.body.style.overflow = ''; if (HAS_GSAP) gsap.set([panel, '.pm-back'], { clearProps: 'all' }); if (lastFocus && lastFocus.focus) lastFocus.focus(); };
     if (!HAS_GSAP || RM) return done();
-    gsap.to('.pm-back', { opacity: 0, duration: .5 });
-    gsap.to(panel, { xPercent: 100, rotateY: -16, duration: .65, ease: 'power2.in', onComplete: done });
+    gsap.to('.pm-back', { opacity: 0, duration: .62 });
+    gsap.to(panel, { xPercent: 100, rotateY: -16, duration: .81, ease: 'power2.in', onComplete: done });
   }
   pm.addEventListener('click', e => {
     if (e.target.closest('[data-close]')) return closeModal();

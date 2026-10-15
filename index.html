@@ -15,11 +15,11 @@
 <div id="site-header"></div>
 <main>
 <section class="hero">
-  <div class="wash"><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="wash band" id="hero-band" aria-hidden="true"></div>
   <div class="flora float h1" data-flora="tube"></div>
   <div class="flora float s2 h2" data-flora="brush"></div>
   <div class="flora float s3 h3" data-flora="palette"></div>
-  <div class="flora float s2 h4" data-flora="swatches"></div>
+  <div class="flora float s2 h4" data-flora="journal"></div>
   <div class="wrap">
     <span class="eyebrow">Handmade · Made to order</span>
     <h1 data-paint>Art made with soul</h1>
@@ -32,8 +32,11 @@
 </section>
 
 <section class="intro center">
+  <div class="flora d bg" data-flora="bloom" style="width:560px;height:560px;left:50%;top:10px;margin-left:-280px"></div>
   <div class="flora corner tl" data-flora="brush"></div>
   <div class="flora corner br" data-flora="palette"></div>
+  <div class="flora d" data-flora="flower" style="width:230px;height:230px;right:6%;top:30px;transform:rotate(14deg)"></div>
+  <div class="flora d" data-flora="sprig" style="width:200px;height:200px;left:4%;bottom:10px;transform:rotate(-8deg)"></div>
   <div class="wrap reveal">
     <div class="brush" data-brush></div>
     <h2>Hi, I'm Sakina —<br><em>I paint on everything.</em></h2>
@@ -43,6 +46,9 @@
 </section>
 
 <section>
+  <div class="flora d bg" data-flora="bloom2" style="width:520px;height:520px;right:-120px;top:10px"></div>
+  <div class="flora d" data-flora="wildflowers" style="width:220px;height:220px;left:-20px;bottom:30px"></div>
+  <div class="flora d" data-flora="flower2" style="width:200px;height:200px;right:-30px;bottom:60px;transform:rotate(-12deg)"></div>
   <div class="wrap">
     <div class="section-head reveal"><span class="eyebrow">From the studio</span><h2>Fresh off the easel</h2><p>A few pieces to start with. Every one can be made your way.</p></div>
     <div class="grid" id="featured"></div>
@@ -51,11 +57,16 @@
 </section>
 
 <section>
+  <div class="flora d bg" data-flora="bloom3" style="width:520px;height:520px;left:-140px;top:60px"></div>
+  <div class="flora d" data-flora="branch" style="width:230px;height:230px;right:-10px;top:40px"></div>
   <div class="flora corner bl" data-flora="tube"></div>
   <div class="wrap">
     <div class="section-head reveal"><div class="brush" data-brush></div><span class="eyebrow">On Instagram</span><h2>Follow <span class="handle">@sakina_artblog</span></h2><p>Studio peeks, works in progress and new pieces first.</p></div>
-    <div class="tiles" id="ig-tiles"></div>
-    <p class="center reveal" style="margin-top:44px"><a class="btn sage" href="https://www.instagram.com/sakina_artblog/" target="_blank" rel="noopener">Follow along</a></p>
+    <div class="follow-cards">
+      <a class="fcard reveal" data-link="instagram" style="--tint:#E8C4D4"><span class="ficon" data-icon="ig"></span><h3>Instagram</h3><p data-text="handle"></p><span class="btn sm">Follow along</span></a>
+      <a class="fcard reveal" data-link="email" style="--tint:#F5DFA0"><span class="ficon" data-icon="mail"></span><h3>Email</h3><p data-text="email"></p><span class="btn sage sm">Email me</span></a>
+      <a class="fcard reveal" data-link="whatsapp" style="--tint:#F2C4A0"><span class="ficon" data-icon="wa"></span><h3>WhatsApp</h3><p>Chat with me directly</p><span class="btn coral sm">Message me</span></a>
+    </div>
   </div>
 </section>
 </main>

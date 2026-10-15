@@ -4,88 +4,84 @@
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const money = n => n >= 10000 ? '₹10,000+' : '₹' + Number(n).toLocaleString('en-IN');
 
-  /* ---------- painterly illustrations (use the sprite filters from main.js) ---------- */
-  const SK = (inner) => `<svg viewBox="0 0 200 200" aria-hidden="true"><g filter="url(#wc)">${inner}</g></svg>`;
+/* ---------- pencil-and-wash illustrations (helpers pen / sk / wblob come from main.js) ---------- */
+  const SK = inner => `<svg viewBox="0 0 200 200" aria-hidden="true"><g filter="url(#pencil)">${inner}</g></svg>`;
+  const circ = (cx, cy, r) => `M${cx} ${cy - r}A${r} ${r} 0 1 1 ${cx - .1} ${cy - r}Z`;
   const ART = {
     portraits: SK(`
-      <ellipse cx="100" cy="104" rx="66" ry="80" fill="#F4A261" fill-opacity=".35"/>
-      <rect x="48" y="30" width="104" height="140" rx="10" fill="#FFF8E7" fill-opacity=".6" stroke="#E8651A" stroke-width="5" stroke-opacity=".85"/>
-      <path d="M52 168 C56 134 80 124 100 124 C120 124 144 134 148 168Z" fill="#C9184A" fill-opacity=".65"/>
-      <ellipse cx="100" cy="92" rx="24" ry="29" fill="#f0c9a8" fill-opacity=".9"/>
-      <path d="M73 92 C66 52 134 48 127 92 C120 74 82 72 73 92Z" fill="#7a5a4a" fill-opacity=".75"/>
-      <circle cx="90" cy="95" r="2.2" fill="#2D1B00"/><circle cx="110" cy="95" r="2.2" fill="#2D1B00"/>
-      <path d="M92 108 Q100 114 108 108" stroke="#b5655f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-      <circle cx="84" cy="104" r="5" fill="#F4A261" fill-opacity=".7"/><circle cx="116" cy="104" r="5" fill="#F4A261" fill-opacity=".7"/>`),
+      <ellipse cx="100" cy="104" rx="68" ry="82" fill="${PAL.amber}" fill-opacity=".24" filter="url(#wash)"/>
+      ${sk('M48 30L152 30L152 170L48 170Z', '#fffaf0', .55)}
+      ${pen('M57 39L143 39L143 161L57 161Z', .5, 1.1)}
+      ${sk('M52 168C56 134 80 124 100 124C120 124 144 134 148 168Z', PAL.magenta, .35, 'M100 124C120 124 144 134 148 168L122 168C122 150 114 134 100 124Z')}
+      ${sk('M76 92C76 70 124 70 124 92C124 114 112 122 100 122C88 122 76 114 76 92Z', '#f0c9a8', .4)}
+      ${sk('M73 92C66 52 134 48 127 92C120 74 82 72 73 92Z', '#7a5a4a', .3, 'M73 92C66 52 134 48 127 92C120 74 82 72 73 92Z')}
+      ${pen('M90 95h.1M110 95h.1', .9, 3.4)}${pen('M92 108Q100 113 108 108', .75, 1.4, SIENNA)}${pen('M98 99Q95 105 99 105', .5, 1)}
+      ${wblob(84, 104, 6, PAL.coral, .3)}${wblob(116, 104, 6, PAL.coral, .3)}`),
     tshirt: SK(`
-      <ellipse cx="100" cy="100" rx="78" ry="70" fill="#F5C518" fill-opacity=".25"/>
-      <path d="M68 38 L90 30 Q100 48 110 30 L132 38 L166 68 L146 90 L132 78 L132 168 L68 168 L68 78 L54 90 L34 68 Z" fill="#F5C518" fill-opacity=".7" stroke="#c9a000" stroke-width="3" stroke-opacity=".7" stroke-linejoin="round"/>
-      <use href="#splat" x="68" y="76" width="64" height="64"/>
-      <path d="M90 30 Q100 48 110 30" fill="none" stroke="#b8860b" stroke-width="3" stroke-opacity=".6"/>`),
+      <ellipse cx="100" cy="100" rx="80" ry="72" fill="${PAL.yellow}" fill-opacity=".25" filter="url(#wash)"/>
+      ${sk('M68 38L90 30Q100 48 110 30L132 38L166 68L146 90L132 78L132 168L68 168L68 78L54 90L34 68Z', PAL.yellow, .38, 'M112 34L132 38L166 68L146 90L132 78L132 168L112 168Z')}
+      ${pen('M90 30Q100 48 110 30M86 34Q100 54 114 34', .6, 1.1)}
+      ${pen('M70 160C85 156 110 162 130 158M68 146C90 142 112 148 132 144', .35, 1)}
+      <use href="#splat" x="68" y="76" width="64" height="64"/>`),
     jewellery: SK(`
-      <ellipse cx="100" cy="110" rx="70" ry="76" fill="#C9184A" fill-opacity=".28"/>
-      <path d="M74 14 C72 54 100 64 100 86" fill="none" stroke="#E8651A" stroke-width="3" stroke-linecap="round" stroke-opacity=".8"/>
-      <path d="M126 14 C128 54 100 64 100 86" fill="none" stroke="#E8651A" stroke-width="3" stroke-linecap="round" stroke-opacity=".8"/>
-      <path d="M100 84 C134 118 130 162 100 168 C70 162 66 118 100 84Z" fill="#C9184A" fill-opacity=".7" stroke="#9c1239" stroke-width="2.5" stroke-opacity=".6"/>
-      <ellipse cx="88" cy="124" rx="6" ry="16" fill="#fff" fill-opacity=".5" transform="rotate(14 88 124)"/>
+      <ellipse cx="100" cy="110" rx="72" ry="78" fill="${PAL.magenta}" fill-opacity=".3" filter="url(#wash)"/>
+      ${pen('M74 14C72 54 100 64 100 86', .75, 1.5, SIENNA)}${pen('M126 14C128 54 100 64 100 86', .75, 1.5, SIENNA)}
+      ${sk('M100 84C134 118 130 162 100 168C70 162 66 118 100 84Z', PAL.coral, .3, 'M104 90C130 118 128 160 102 168C118 150 118 116 104 90Z')}
+      ${pen('M88 112C82 128 86 146 94 152', .45, 1.1)}
       <use href="#splat" x="82" y="116" width="38" height="38"/>
-      <path d="M38 92 q10 -12 0 -22" fill="none" stroke="#E8651A" stroke-width="3" stroke-linecap="round"/>
-      <path d="M38 96 C52 112 50 134 38 136 C26 134 24 112 38 96Z" fill="#F4A261" fill-opacity=".75"/>
-      <path d="M162 92 q-10 -12 0 -22" fill="none" stroke="#E8651A" stroke-width="3" stroke-linecap="round"/>
-      <path d="M162 96 C176 112 174 134 162 136 C150 134 148 112 162 96Z" fill="#F5C518" fill-opacity=".75"/>`),
+      ${pen('M38 92q10 -12 0 -22', .75, 1.5, SIENNA)}${sk('M38 96C52 112 50 134 38 136C26 134 24 112 38 96Z', PAL.amber, .4)}
+      ${pen('M162 92q-10 -12 0 -22', .75, 1.5, SIENNA)}${sk('M162 96C176 112 174 134 162 136C150 134 148 112 162 96Z', PAL.yellow, .45)}`),
     decor: SK(`
-      <ellipse cx="100" cy="106" rx="76" ry="72" fill="#F4A261" fill-opacity=".28"/>
-      <rect x="28" y="32" width="26" height="104" rx="5" fill="#C9184A" fill-opacity=".6" transform="rotate(-16 41 84)"/>
-      <path d="M36 134 l-12 22" stroke="#E8651A" stroke-width="3" stroke-linecap="round" transform="rotate(-16 41 84)"/>
-      <circle cx="128" cy="84" r="48" fill="#F5C518" fill-opacity=".55" stroke="#c9a000" stroke-width="2" stroke-opacity=".6"/>
-      <circle cx="96" cy="118" r="58" fill="#F4A261" fill-opacity=".7" stroke="#e08a50" stroke-width="2.5" stroke-opacity=".6"/>
-      <circle cx="96" cy="118" r="46" fill="none" stroke="#fff" stroke-width="2" stroke-opacity=".7" stroke-dasharray="3 5"/>
-      <path d="M58 128 C78 94 112 150 136 104" fill="none" stroke="#F5C518" stroke-width="7" stroke-linecap="round" stroke-opacity=".8"/>
-      <circle cx="78" cy="96" r="2.6" fill="#E8651A"/><circle cx="116" cy="140" r="3" fill="#E8651A"/><circle cx="124" cy="104" r="2" fill="#E8651A"/>`),
+      <ellipse cx="100" cy="106" rx="78" ry="74" fill="${PAL.amber}" fill-opacity=".26" filter="url(#wash)"/>
+      ${sk('M30 38L54 30L66 134L42 142Z', PAL.magenta, .35, 'M54 30L66 134L42 142Z')}
+      ${pen('M44 142L36 160M46 142L42 162', .6, 1.2, SIENNA)}
+      ${sk(circ(128, 84, 48), PAL.yellow, .32)}
+      ${sk(circ(96, 118, 58), PAL.amber, .34, 'M60 140A58 58 0 0 0 150 150C120 150 90 146 60 140Z')}
+      ${pen(circ(96, 118, 46), .4, 1.1)}
+      ${pen('M58 128C78 94 112 150 136 104', .6, 3, PAL.coral)}${pen('M78 96h.1M116 140h.1M124 104h.1', .7, 3, SIENNA)}`),
     gifting: SK(`
-      <ellipse cx="100" cy="108" rx="78" ry="74" fill="#E8651A" fill-opacity=".22"/>
-      <rect x="22" y="128" width="40" height="40" rx="8" fill="#C9184A" fill-opacity=".7" transform="rotate(-10 42 148)"/>
-      <path d="M42 156 c-9 -7 -9 -16 0 -16 s9 9 0 16Z" fill="#FFF8E7" fill-opacity=".85" transform="rotate(-10 42 148)"/>
-      <circle cx="160" cy="46" r="14" fill="none" stroke="#E8651A" stroke-width="3.5" stroke-opacity=".85"/>
-      <path d="M160 60 L160 82" stroke="#E8651A" stroke-width="2.5" stroke-opacity=".8"/>
-      <circle cx="160" cy="98" r="16" fill="#F5C518" fill-opacity=".75" stroke="#c9a000" stroke-width="2" stroke-opacity=".6"/>
-      <path d="M72 172 C66 132 78 112 100 112 C122 112 134 132 128 172Z" fill="#E8651A" fill-opacity=".7"/>
-      <circle cx="100" cy="86" r="27" fill="#f0c9a8" fill-opacity=".92"/>
-      <path d="M73 84 C72 52 128 52 127 84 C118 68 82 68 73 84Z" fill="#7a5a4a" fill-opacity=".75"/>
-      <circle cx="91" cy="90" r="2.4" fill="#2D1B00"/><circle cx="109" cy="90" r="2.4" fill="#2D1B00"/>
-      <path d="M93 101 Q100 106 107 101" stroke="#b5655f" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-      <circle cx="84" cy="98" r="4.5" fill="#F4A261" fill-opacity=".75"/><circle cx="116" cy="98" r="4.5" fill="#F4A261" fill-opacity=".75"/>`)
+      <ellipse cx="100" cy="108" rx="80" ry="76" fill="${PAL.orange}" fill-opacity=".2" filter="url(#wash)"/>
+      ${sk('M22 130L62 126L66 166L26 170Z', PAL.magenta, .38, 'M44 128L62 126L66 166L46 168Z')}
+      ${pen('M44 158c-9 -7 -9 -16 0 -16s9 9 0 16Z', .6, 1.2, SIENNA)}
+      ${pen(circ(160, 46, 14), .7, 1.6)}${pen('M160 60L160 82', .6, 1.3)}
+      ${sk(circ(160, 98, 16), PAL.yellow, .4)}
+      ${sk('M72 172C66 132 78 112 100 112C122 112 134 132 128 172Z', PAL.orange, .35, 'M104 113C124 114 134 134 128 172L108 172C112 150 112 128 104 113Z')}
+      ${sk('M73 86C73 62 127 62 127 86C127 108 114 116 100 116C86 116 73 108 73 86Z', '#f0c9a8', .4)}
+      ${sk('M73 84C72 52 128 52 127 84C118 68 82 68 73 84Z', '#7a5a4a', .3, 'M73 84C72 52 128 52 127 84C118 68 82 68 73 84Z')}
+      ${pen('M91 90h.1M109 90h.1', .9, 3.2)}${pen('M93 101Q100 106 107 101', .75, 1.4, SIENNA)}
+      ${wblob(84, 98, 5, PAL.coral, .3)}${wblob(116, 98, 5, PAL.coral, .3)}`)
   };
 
   /* ---------- category + field config ---------- */
   const THEMES = ['Ocean', 'Floral', 'Galaxy', 'Earthy', 'Pastel dream', 'Surprise me'];
   const SWATCHES = [['Dusty rose', '#E8B4B8'], ['Sage', '#A8C5A0'], ['Mauve', '#C4A0B5'], ['Terracotta', '#D4956A'], ['Ocean blue', '#8DB4D8'], ['Butter yellow', '#F2DC8C'], ['Ivory', '#F6EFE2'], ['Charcoal', '#4a4a4a']];
   const CATS = {
-    portraits: { name: 'Portraits', desc: 'Faces, pets, and the people you love — painted in your chosen style', tint: '#F4A261',
+    portraits: { name: 'Portraits', desc: 'Faces, pets, and the people you love — painted in your chosen style', tint: '#F2C4A0',
       sizes: ['A5 (15 × 21 cm)', 'A4 (21 × 30 cm)', 'A3 (30 × 42 cm)', 'A2 (42 × 60 cm)', 'Other (tell me in the notes)'],
       extra: [
         { type: 'pills', name: 'subject', label: 'Who or what is the portrait of?', opts: ['Person', 'Pet', 'Both'], req: true },
         { type: 'pills', name: 'style', label: 'Art style', opts: ['Realistic', 'Watercolour', 'Oil-effect'], req: true }] },
-    tshirt: { name: 'T-shirt Painting', desc: 'Wearable art, hand-painted just for you', tint: '#F5C518',
+    tshirt: { name: 'T-shirt Painting', desc: 'Wearable art, hand-painted just for you', tint: '#F5DFA0',
       sizes: ['Small design (chest)', 'Medium (front panel)', 'Large (full front or back)', 'Other (tell me in the notes)'],
       extra: [
         { type: 'pills', name: 'supply', label: 'T-shirt', opts: ["I'll provide my own", 'Please arrange one for me'], req: true },
         { type: 'select', name: 'tsize', label: 'T-shirt size', opts: ['XS', 'S', 'M', 'L', 'XL', 'XXL'], req: true },
         { type: 'select', name: 'fabric', label: 'Fabric colour', opts: ['White', 'Black', 'Navy', 'Beige', 'Sage green', 'Dusty pink', 'Other'], req: true }] },
-    jewellery: { name: 'Resin Jewellery', desc: 'Earrings, pendants, and bracelets preserved in resin', tint: '#C9184A',
+    jewellery: { name: 'Resin Jewellery', desc: 'Earrings, pendants, and bracelets preserved in resin', tint: '#E8C4D4',
       sizes: ['Dainty', 'Medium', 'Statement', 'Other (tell me in the notes)'],
       extra: [
         { type: 'pills', name: 'piece', label: 'What would you like?', opts: ['Earrings', 'Pendant', 'Bracelet'], req: true },
         { type: 'select', name: 'theme', label: 'Colour theme', opts: THEMES },
         { type: 'checks', name: 'incl', label: 'Inclusions', opts: ['Flowers', 'Glitter', 'Shells', 'Custom'] },
         { type: 'number', name: 'qty', label: 'Quantity', def: 1 }] },
-    decor: { name: 'Resin Home Décor', desc: 'Coasters, bookmarks, photo frames, and trays', tint: '#F4A261',
+    decor: { name: 'Resin Home Décor', desc: 'Coasters, bookmarks, photo frames, and trays', tint: '#F2C4A0',
       sizes: ['Small (coaster / bookmark)', 'Medium (frame)', 'Large (tray)', 'Other (tell me in the notes)'],
       extra: [
         { type: 'pills', name: 'piece', label: 'What would you like?', opts: ['Coasters', 'Bookmarks', 'Photo frame', 'Tray'], req: true },
         { type: 'select', name: 'theme', label: 'Colour theme', opts: THEMES },
         { type: 'checks', name: 'incl', label: 'Inclusions', opts: ['Flowers', 'Glitter', 'Shells', 'Custom'] },
         { type: 'number', name: 'qty', label: 'Quantity', def: 1 }] },
-    gifting: { name: 'Desk & Gifting Pieces', desc: 'Figurines, keychains, and fridge magnets — small art for everyday joy', tint: '#E8651A',
+    gifting: { name: 'Desk & Gifting Pieces', desc: 'Figurines, keychains, and fridge magnets — small art for everyday joy', tint: '#E8957A',
       sizes: ['Mini (about 3 cm)', 'Small (about 5 cm)', 'Medium (about 8 cm)', 'Other (tell me in the notes)'],
       extra: [
         { type: 'pills', name: 'piece', label: 'What would you like?', opts: ['Figurine', 'Keychain', 'Fridge magnet'], req: true },
@@ -313,9 +309,9 @@
     sp.hidden = false; document.body.style.overflow = 'hidden';
     if (!HAS_GSAP || RM) return;
     const tl = gsap.timeline();
-    tl.fromTo(sp, { opacity: 0 }, { opacity: 1, duration: .4 })
-      .fromTo('.splash .sp', { scale: 0, opacity: 0 }, { scale: 1, opacity: .85, duration: 1.4, ease: 'power3.out', stagger: .15 }, 0)
-      .fromTo('.splash-in > *', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: .9, ease: 'power2.out', stagger: .12 }, .5);
+    tl.fromTo(sp, { opacity: 0 }, { opacity: 1, duration: .5 })
+      .fromTo('.splash .sp', { scale: 0, opacity: 0 }, { scale: 1, opacity: .85, duration: 1.75, ease: 'power3.out', stagger: .19 }, 0)
+      .fromTo('.splash-in > *', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 1.12, ease: 'power2.out', stagger: .15 }, .5);
     const cols = Object.values(PAL);
     for (let i = 0; i < 18; i++) {
       const d = document.createElement('i'); d.className = 'dr';
@@ -323,13 +319,13 @@
       Object.assign(d.style, { width: sz + 'px', height: sz + 'px', background: cols[i % 4] });
       sp.appendChild(d);
       const a = Math.random() * Math.PI * 2, dist = 160 + Math.random() * Math.min(innerWidth, 700) * .45;
-      gsap.fromTo(d, { x: 0, y: 0, scale: .2, opacity: .8 }, { x: Math.cos(a) * dist, y: Math.sin(a) * dist, scale: 1, opacity: 0, duration: 1.8 + Math.random(), ease: 'power3.out', delay: .1, onComplete: () => d.remove() });
+      gsap.fromTo(d, { x: 0, y: 0, scale: .2, opacity: .8 }, { x: Math.cos(a) * dist, y: Math.sin(a) * dist, scale: 1, opacity: 0, duration: 2.25 + Math.random(), ease: 'power3.out', delay: .12, onComplete: () => d.remove() });
     }
   }
 
   /* ---------- navigation between steps (brush-stroke wipe) ---------- */
   const wipe = $('#wipe');
-  const stripes = ['#F4A261', '#C9184A', '#F5C518', '#E8651A', '#F4A261', '#F5C518', '#C9184A'];
+  const stripes = ['#F2C4A0', '#E8C4D4', '#F5DFA0', '#E8957A', '#F2C4A0', '#F5DFA0', '#E8C4D4'];
   wipe.innerHTML = `<svg viewBox="0 0 1000 420" preserveAspectRatio="none"><g filter="url(#wc)" fill="none" stroke-linecap="round">${stripes.map((c, i) =>
     `<path d="M${30 + (i % 3) * 14} ${36 + i * 58} C250 ${20 + i * 58} 520 ${60 + i * 58} 970 ${38 + i * 58}" stroke="${c}" stroke-width="84" stroke-opacity=".95"/>`).join('')}</g></svg>`;
 
@@ -352,9 +348,9 @@
     if (!HAS_GSAP || RM) { paint(n); busy = false; return; }
     const dir = n > S.step ? 1 : -1;
     gsap.set(wipe, { xPercent: -112 * dir, x: 0, autoAlpha: 1 });
-    gsap.to(wipe, { xPercent: 0, duration: .6, ease: 'power2.in', onComplete() {
+    gsap.to(wipe, { xPercent: 0, duration: .75, ease: 'power2.in', onComplete() {
       paint(n);
-      gsap.to(wipe, { xPercent: 112 * dir, duration: .75, ease: 'power2.out', onComplete: () => { gsap.set(wipe, { autoAlpha: 0 }); busy = false; } });
+      gsap.to(wipe, { xPercent: 112 * dir, duration: .94, ease: 'power2.out', onComplete: () => { gsap.set(wipe, { autoAlpha: 0 }); busy = false; } });
     } });
   }
   $('#next1').onclick = () => goTo(2);
