@@ -1,0 +1,6 @@
+# Secrets – never commit these
+.supabase-token
+.supabase-secrets.json
+.env
+.env.*
+node_modules/

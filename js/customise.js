@@ -74,14 +74,14 @@
         { type: 'select', name: 'theme', label: 'Colour theme', opts: THEMES },
         { type: 'checks', name: 'incl', label: 'Inclusions', opts: ['Flowers', 'Glitter', 'Shells', 'Custom'] },
         { type: 'number', name: 'qty', label: 'Quantity', def: 1 }] },
-    decor: { name: 'Resin Home Décor', desc: 'Coasters, bookmarks, photo frames, and trays', tint: '#F2C4A0',
+    decor: { name: 'Resin Home Décor', desc: 'Coasters, bookmarks, photo frames, and trays', tint: '#E8957A',
       sizes: ['Small (coaster / bookmark)', 'Medium (frame)', 'Large (tray)', 'Other (tell me in the notes)'],
       extra: [
         { type: 'pills', name: 'piece', label: 'What would you like?', opts: ['Coasters', 'Bookmarks', 'Photo frame', 'Tray'], req: true },
         { type: 'select', name: 'theme', label: 'Colour theme', opts: THEMES },
         { type: 'checks', name: 'incl', label: 'Inclusions', opts: ['Flowers', 'Glitter', 'Shells', 'Custom'] },
         { type: 'number', name: 'qty', label: 'Quantity', def: 1 }] },
-    gifting: { name: 'Desk & Gifting Pieces', desc: 'Figurines, keychains, and fridge magnets — small art for everyday joy', tint: '#E8957A',
+    gifting: { name: 'Desk & Gifting Pieces', desc: 'Figurines, keychains, and fridge magnets — small art for everyday joy', tint: '#D4849A',
       sizes: ['Mini (about 3 cm)', 'Small (about 5 cm)', 'Medium (about 8 cm)', 'Other (tell me in the notes)'],
       extra: [
         { type: 'pills', name: 'piece', label: 'What would you like?', opts: ['Figurine', 'Keychain', 'Fridge magnet'], req: true },
@@ -101,14 +101,33 @@
   grid.innerHTML = ORDER.map(id => `
     <button type="button" class="cat-card" role="radio" aria-checked="false" data-id="${id}" style="--tint:${CATS[id].tint}">
       <span class="wash-bg" aria-hidden="true"></span>
+      <svg class="draw" aria-hidden="true"><path d=""/></svg>
       <span class="art">${ART[id]}</span>
       <span class="stamp" aria-hidden="true">✓</span>
       <h3>${CATS[id].name}</h3><p>${CATS[id].desc}</p>
     </button>`).join('');
 
+  // a hand-drawn, slightly wobbly border that draws itself around the chosen card
+  const wob = n => (Math.random() - .5) * n;
+  function fitDraw(card) {
+    const svg = card.querySelector('.draw'), p = svg.querySelector('path');
+    const w = card.offsetWidth + 10, h = card.offsetHeight + 10;
+    svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+    p.setAttribute('d', `M${6 + wob(3)} ${7 + wob(3)}C${w * .3} ${2 + wob(4)} ${w * .7} ${8 + wob(4)} ${w - 6} ${5 + wob(3)}C${w - 2 + wob(3)} ${h * .3} ${w - 8 + wob(4)} ${h * .7} ${w - 5} ${h - 6}C${w * .7} ${h - 2 + wob(4)} ${w * .3} ${h - 8 + wob(4)} ${7 + wob(3)} ${h - 5}C${2 + wob(3)} ${h * .7} ${8 + wob(3)} ${h * .3} ${6 + wob(2)} ${14 + wob(2)}`);
+    p.style.strokeDasharray = p.getTotalLength();
+  }
+  addEventListener('resize', () => { const c = document.querySelector('.cat-card.sel'); if (c) { fitDraw(c); const p = c.querySelector('.draw path'); p.style.transition = 'none'; p.style.strokeDashoffset = 0; } });
   function selectCat(id) {
     if (S.cat !== id) { S.cat = id; S.f = {}; S.incl = new Set(); }
-    $$('.cat-card').forEach(c => { const on = c.dataset.id === id; c.classList.toggle('sel', on); c.setAttribute('aria-checked', on); });
+    $$('.cat-card').forEach(c => {
+      const on = c.dataset.id === id; c.classList.toggle('sel', on); c.setAttribute('aria-checked', on);
+      const p = c.querySelector('.draw path');
+      if (on) {
+        fitDraw(c); const L = p.getTotalLength();
+        p.style.transition = 'none'; p.style.strokeDashoffset = L; p.getBoundingClientRect(); p.style.transition = '';
+        requestAnimationFrame(() => { p.style.strokeDashoffset = 0; });
+      } else if (p.getAttribute('d')) p.style.strokeDashoffset = p.getTotalLength();
+    });
     $('#next1').disabled = false;
     $('#hint1').textContent = `${CATS[id].name} — lovely choice`;
   }
@@ -119,7 +138,7 @@
     $$('.cat-card').forEach(c => {
       c.addEventListener('pointermove', e => {
         const r = c.getBoundingClientRect(), px = (e.clientX - r.left) / r.width - .5, py = (e.clientY - r.top) / r.height - .5;
-        c.style.setProperty('--ry', (px * 12).toFixed(2) + 'deg'); c.style.setProperty('--rx', (-py * 12).toFixed(2) + 'deg');
+        c.style.setProperty('--ry', (px * 8).toFixed(2) + 'deg'); c.style.setProperty('--rx', (-py * 8).toFixed(2) + 'deg');
         c.style.setProperty('--tx', (px * 14).toFixed(1) + 'px'); c.style.setProperty('--ty', (py * 14).toFixed(1) + 'px');
       });
       c.addEventListener('pointerleave', () => ['--rx', '--ry', '--tx', '--ty'].forEach(v => c.style.removeProperty(v)));

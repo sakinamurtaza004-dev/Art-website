@@ -172,6 +172,7 @@ const ICON = {
   wa: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.6 20.4l1.3-4.7A8.5 8.5 0 1 1 8.3 19.2z"/><path d="M9.1 8.7c.3 2.5 2.7 5 5.9 5.7l1.2-1.4-2-1-.9.7c-.9-.4-1.7-1.2-2.1-2.1l.7-.9-1-2z"/></svg>',
   mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M4 7.5l8 6 8-6"/></svg>'
 };
+ICON.gear = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>';
 const socials = `<a class="soc" href="${CFG.instagram}" target="_blank" rel="noopener" aria-label="Instagram">${ICON.ig}</a><a class="soc" href="https://wa.me/${CFG.whatsapp}" target="_blank" rel="noopener" aria-label="WhatsApp">${ICON.wa}</a><a class="soc" href="mailto:${CFG.email}" aria-label="Email">${ICON.mail}</a>`;
 
 const SPRITE = `
@@ -238,12 +239,13 @@ const LINKS = [['index.html', 'Home', 'home'], ['customise.html', 'Customise', '
 const UL = '<svg class="ul" viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true"><path class="y" d="M2 5 Q18 2 38 5 T70 4 T98 4" pathLength="1"/><path class="o" d="M3 6 Q22 3 42 6 T72 5 T97 6" pathLength="1"/></svg>';
 const BAG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>';
 
-document.getElementById('site-header').innerHTML = `
+if (document.getElementById('site-header')) document.getElementById('site-header').innerHTML = `
 <header class="site"><div class="wrap nav">
   <a class="logo" href="index.html"><svg class="logo-ic" viewBox="0 0 200 200" aria-hidden="true"><use href="#palette" width="200" height="200"/></svg><span data-paint>${CFG.brand}</span></a>
   <nav class="menu" aria-label="Main">${LINKS.map(l => `<a href="${l[0]}" class="${page === l[2] ? 'active' : ''}">${l[1]}${UL}</a>`).join('')}</nav>
   <div class="nav-r">
     ${socials}
+    <a class="gear" href="admin.html" aria-label="Studio admin login" title="Studio admin">${ICON.gear}</a>
     <button class="cart-btn" id="cart-btn" type="button" aria-label="Open cart">${BAG}<span class="badge" id="cart-count" hidden>0</span></button>
     <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
@@ -253,7 +255,7 @@ document.getElementById('site-header').innerHTML = `
   <nav>${LINKS.map(l => `<a href="${l[0]}" class="${page === l[2] ? 'active' : ''}">${l[1]}</a>`).join('')}<div class="mn-soc">${socials}</div></nav>
 </div>`;
 
-document.getElementById('site-footer').innerHTML = `
+if (document.getElementById('site-footer')) document.getElementById('site-footer').innerHTML = `
 <footer class="site-footer">
   <div class="flora f1" data-flora="tube2"></div><div class="flora f2" data-flora="splat"></div><div class="flora d" data-flora="flower" style="width:150px;height:150px;left:20%;bottom:-46px;transform:rotate(-10deg)"></div><div class="flora d" data-flora="wildflowers" style="width:150px;height:150px;right:20%;bottom:-40px"></div>
   <div class="wrap">
@@ -273,6 +275,7 @@ document.getElementById('site-footer').innerHTML = `
 
 const burger = document.getElementById('burger'), mnav = document.getElementById('mnav');
 function toggleMenu(open) {
+  if (!mnav) return;
   open = open ?? !mnav.classList.contains('open');
   mnav.classList.toggle('open', open);
   burger.classList.toggle('on', open);
@@ -281,12 +284,13 @@ function toggleMenu(open) {
   document.body.style.overflow = open ? 'hidden' : '';
   if (open && HAS_GSAP && !RM) gsap.fromTo('#mnav nav a', { y: 40, opacity: 0 }, { y: 0, opacity: 1, stagger: .1, duration: .9, ease: 'power3.out', delay: .2 });
 }
-burger.onclick = () => toggleMenu();
+if (burger) burger.onclick = () => toggleMenu();
 
 /* ---------- products (shared by Home + Shop) ---------- */
+const escH = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const placeholderHTML = id => { const c = catOf(id); return `<div class="ph" style="--tint:${c.tint}">${floraSVG(c.flora)}</div>`; };
 const phHTML = p => p.image
-  ? `<img class="photo" src="${p.image}" alt="${p.title}" loading="lazy" data-cat="${p.category}">`
+  ? `<img class="photo" src="${p.image}" alt="${escH(p.title)}" loading="lazy" data-cat="${p.category}">`
   : placeholderHTML(p.category);
 const priceText = p => p.price ? `${p.from ? 'From ' : ''}${money(p.price)}` : 'Price on request';
 // a picture that fails to load (offline, bad path) falls back to a pencil sketch
@@ -298,18 +302,57 @@ document.addEventListener('error', e => {
   }
 }, true);
 
-const loadProducts = () => fetch('data/products.json').then(r => r.json()).then(j => j.products);
+/* ---------- listings live in a Supabase database: whatever the admin uploads is visible to every visitor ---------- */
+const CUSTOM_FOR = { paintings: 'portraits', resin: 'jewellery', tshirts: 'tshirt', decor: 'decor', gifting: 'gifting' };
+const SUPA = { on: !!(CFG.supabaseUrl && CFG.supabaseKey), url: String(CFG.supabaseUrl || '').replace(/\/+$/, ''), key: CFG.supabaseKey || '' };
+const supaHeaders = token => ({ apikey: SUPA.key, Authorization: 'Bearer ' + (token || SUPA.key) });
+// only web links or our own assets/ folder are allowed as an image source
+const safeImg = u => { u = String(u || '').trim(); return /^(https?:\/\/|assets\/)/i.test(u) ? u.replace(/"/g, '%22').replace(/</g, '%3C') : ''; };
+// database row -> the camelCase shape used around the site
+const fromRow = r => ({
+  id: r.id, title: r.title, category: r.category, description: r.description, price: r.price, priceType: r.price_type,
+  size: r.size, medium: r.medium, images: Array.isArray(r.images) ? r.images : [], visible: r.visible, oneOfAKind: r.one_of_a_kind, createdAt: r.created_at
+});
+// listing -> the product shape the shop already understands
+function listingToProduct(l) {
+  const fixed = l.priceType === 'fixed', from = l.priceType === 'from';
+  const price = (fixed || from) && Number(l.price) > 0 ? Number(l.price) : null;
+  const category = CUSTOM_FOR[l.category] ? l.category : 'paintings';
+  const images = (l.images && l.images.length ? l.images : [l.imageUrl]).map(safeImg).filter(Boolean);
+  return {
+    id: String(l.id), title: l.title || 'Untitled', category, medium: l.medium || '', size: l.size || '',
+    price, from: from && !!price, original: !!l.oneOfAKind,
+    availability: l.oneOfAKind ? 'Only 1 available' : (fixed && price ? 'In stock' : 'Made to order'),
+    cta: fixed && price ? 'cart' : 'enquire', custom: CUSTOM_FOR[category], ratio: '4/5',
+    image: images[0] || '', images, description: l.description || ''
+  };
+}
+// connected -> the visible listings from the database; not connected yet -> the sample pieces
+async function loadProducts() {
+  if (SUPA.on) {
+    const r = await fetch(`${SUPA.url}/rest/v1/listings?select=*&visible=eq.true&order=created_at.desc`, { headers: supaHeaders(), cache: 'no-store' });
+    if (!r.ok) throw new Error('Could not load listings (' + r.status + ')');
+    return (await r.json()).map(fromRow).map(listingToProduct);
+  }
+  return fetch('data/products.json').then(r => r.json()).then(j => j.products);
+}
+// home page: one piece from each of up to three categories
+const pickFeatured = ps => {
+  const seen = new Set(), out = [];
+  ps.forEach(p => { if (out.length < 3 && !seen.has(p.category)) { seen.add(p.category); out.push(p); } });
+  ps.forEach(p => { if (out.length < 3 && !out.includes(p)) out.push(p); });
+  return out;
+};
 
 const featured = document.getElementById('featured');
 if (featured) loadProducts().then(ps => {
-  featured.innerHTML = [0, 3, 10].map(i => ps[i]).filter(Boolean).map(p => `
+  featured.innerHTML = ps.length ? pickFeatured(ps).map(p => `
     <a class="piece reveal" href="shop.html?open=${p.id}">
       <figure>${phHTML(p)}</figure>
-      <div class="cap"><span class="kicker">${catName(p.category)}</span><h3>${p.title}</h3><p>${p.medium} · ${priceText(p)}</p><span class="btn sm">View piece</span></div>
-    </a>`).join('');
+      <div class="cap"><span class="kicker">${catName(p.category)}</span><h3>${escH(p.title)}</h3><p>${escH(p.medium)} · ${priceText(p)}</p><span class="btn sm">View piece</span></div>
+    </a>`).join('') : '<p class="empty">New pieces are on their way — follow along on Instagram to see them first.</p>';
   fill(featured); reveal(featured);
-});
-
+}).catch(() => { featured.innerHTML = '<p class="empty">The collection is taking a moment to load — please try again shortly.</p>'; });
 const tiles = document.getElementById('ig-tiles');
 if (tiles) tiles.innerHTML = [['palette', PAL.yellow], ['brush', PAL.amber], ['tube', PAL.coral], ['journal', PAL.magenta], ['splat', PAL.orange], ['drops', PAL.yellow]]
   .map(([f, t]) => `<a class="tile reveal" href="${CFG.instagram}" target="_blank" rel="noopener" aria-label="Instagram"><div class="ph" style="--tint:${t}">${floraSVG(f)}</div><span class="tile-ic">${ICON.ig}</span></a>`).join('');
@@ -349,8 +392,27 @@ function reveal(root = document, force = false) {
   if (force) ScrollTrigger.refresh();
 }
 
+// hero headline: each word is revealed bottom-to-top by a clip-path "paint stroke", one after the other
+function revealWords(el) {
+  const text = el.textContent;
+  el.setAttribute('aria-label', text);
+  el.innerHTML = text.split(' ').map(w => `<span class="wd" aria-hidden="true"><span class="wi">${w}</span></span>`).join(' ');
+  gsap.fromTo(el.querySelectorAll('.wd'), { clipPath: 'inset(100% -6% -22% -6%)' },
+    { clipPath: 'inset(-22% -6% -22% -6%)', duration: .75, stagger: .2, ease: 'power3.out', delay: .4, clearProps: 'clipPath' });
+  gsap.fromTo(el.querySelectorAll('.wi'), { y: '60%' }, { y: 0, duration: .75, stagger: .2, ease: 'power3.out', delay: .4, clearProps: 'transform' });
+}
+
 function intro() {
   if (!HAS_GSAP || RM) return;
+  document.querySelectorAll('[data-reveal="words"]').forEach(revealWords);
+  if (document.querySelector('.hero-splash')) gsap.from('.hero-splash', { opacity: 0, scale: .72, duration: 1.8, delay: .5, ease: 'power2.out' });
+  // "How it works": the three steps float in one after another as they scroll into view
+  if (window.ScrollTrigger && document.querySelector('.how-step')) {
+    const steps = gsap.utils.toArray('.how-step');
+    gsap.set(steps, { opacity: 0, y: 60 });
+    ScrollTrigger.batch(steps, { start: 'top 88%', once: true,
+      onEnter: els => gsap.to(els, { opacity: 1, y: 0, duration: 1.2, stagger: .24, ease: 'power3.out', clearProps: 'transform,opacity' }) });
+  }
   document.querySelectorAll('[data-paint]').forEach((el, n) => {
     const chars = splitPaint(el);
     const target = getComputedStyle(el).color;
@@ -398,6 +460,7 @@ function cursor() {
 const wash = document.getElementById('wash-page');
 let leaving = false;
 function pageWash() {
+  if (!wash) return;
   if (!HAS_GSAP || RM) return;
   if (sessionStorage.getItem('wash')) {
     sessionStorage.removeItem('wash');
@@ -416,4 +479,34 @@ function pageWash() {
   });
 }
 
-cursor(); pageWash(); intro();
+/* ---------- scroll behaviour: nav fill, progress brushstroke ---------- */
+function scrollChrome() {
+  const hdr = document.querySelector('header.site');
+  const bar = document.createElement('div');
+  bar.className = 'scroll-progress'; bar.setAttribute('aria-hidden', 'true'); bar.innerHTML = '<i></i>';
+  document.body.appendChild(bar);
+  const fillBar = bar.firstChild;
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    const y = scrollY, max = document.documentElement.scrollHeight - innerHeight;
+    if (hdr) hdr.classList.toggle('scrolled', y > 30);
+    fillBar.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
+  };
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  addEventListener('resize', update);
+  update();
+}
+
+/* ---------- a rough sienna brushstroke between every section ---------- */
+function sectionDividers() {
+  const stroke = `<svg viewBox="0 0 1200 30" preserveAspectRatio="none" aria-hidden="true"><path d="M0 16C150 8 300 22 500 14S860 9 1000 18S1160 12 1200 15" fill="none" stroke="${SIENNA}" stroke-width="6" stroke-opacity=".3" stroke-linecap="round" filter="url(#wc)"/></svg>`;
+  [...document.querySelectorAll('main > section, main > .page-head')].forEach((el, i) => {
+    if (!i) return;
+    const d = document.createElement('div');
+    d.className = 'sec-div'; d.setAttribute('aria-hidden', 'true'); d.innerHTML = stroke;
+    el.before(d);
+  });
+}
+
+cursor(); pageWash(); sectionDividers(); scrollChrome(); intro();

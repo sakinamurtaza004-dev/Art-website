@@ -28,7 +28,7 @@
   const list = () => current === 'all' ? all : all.filter(p => p.category === current);
   function draw(first) {
     triggers.forEach(t => t.kill()); triggers = [];
-    grid.innerHTML = list().map(card).join('');
+    grid.innerHTML = list().length ? list().map(card).join('') : '<p class="empty">Nothing here just yet — new pieces are on their way. In the meantime, <a href="customise.html" style="text-decoration:underline">design something custom</a>.</p>';
     fill(grid);
     if (first && HAS_GSAP && !RM && window.ScrollTrigger) {
       const cards = $$('.pcard');
@@ -84,7 +84,7 @@
       : `<a class="btn solid" href="${link(p, p.title)}">Request This Piece</a>`;
     return `
       <div class="pm-grid">
-        <figure class="pm-img" style="--tint:${catOf(p.category).tint}"><div style="aspect-ratio:${p.ratio || '4/5'}">${phHTML(p)}</div>${p.original && !p.sold ? '<span class="stamp-badge big">One of a kind</span>' : ''}</figure>
+        <figure class="pm-img" style="--tint:${catOf(p.category).tint}"><div style="aspect-ratio:${p.ratio || '4/5'}">${phHTML(p)}</div>${(p.images || []).length > 1 ? `<div class="pm-thumbs">${p.images.map((u, i) => `<button type="button" class="pm-thumb${i ? '' : ' on'}" data-src="${esc(u)}" aria-label="Photo ${i + 1}"><img src="${esc(u)}" alt=""></button>`).join('')}</div>` : ''}${p.original && !p.sold ? '<span class="stamp-badge big">One of a kind</span>' : ''}</figure>
         <div class="pm-info">
           <span class="kicker">${catName(p.category)}</span>
           <h2 id="pm-title">${esc(p.title)}</h2>
@@ -132,6 +132,8 @@
     gsap.to(panel, { xPercent: 100, rotateY: -16, duration: .81, ease: 'power2.in', onComplete: done });
   }
   pm.addEventListener('click', e => {
+    const th = e.target.closest('.pm-thumb');
+    if (th) { const im = pm.querySelector('.pm-img img.photo'); if (im) im.src = th.dataset.src; pm.querySelectorAll('.pm-thumb').forEach(b => b.classList.toggle('on', b === th)); return; }
     if (e.target.closest('[data-close]')) return closeModal();
     const add = e.target.closest('[data-add]'); if (add) return Cart.add(byId[add.dataset.add]);
     const rel = e.target.closest('[data-open]'); if (rel) openModal(rel.dataset.open, true);
@@ -146,6 +148,11 @@
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   });
 
+  // a visitor who comes back to this tab sees anything new the admin has uploaded meanwhile
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden || !SUPA.on) return;
+    loadProducts().then(ps => { all = ps; byId = {}; ps.forEach(p => byId[p.id] = p); if (!busy) draw(); }).catch(() => {});
+  });
   /* ---------- go ---------- */
   paintFilters();
   loadProducts().then(ps => {
